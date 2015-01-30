@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="description" content="DBMON NOT REACT" />
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="../styles.css" rel="stylesheet" type="text/css" />
+<title>dbmon</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/x-handlebars">
+    <div id="latest-data">
+      <table class="table table-striped latest-data">
+        <tbody>
+          {{#each sample in controller}}
+            <tr>
+              <td class="dbname">{{sample.name}}</td>
+              {{render "sample" sample.latestSample}}
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="sample">
+    <td class="query-count">
+      <span {{bind-attr class=":label queriesCountLabelClass"}}>{{queries.length}}</span>
+    </td>
+    {{#each query in topFiveQueries}}
+      {{render "query" query}}
+    {{/each}}
+  </script>
+
+  <script type="text/x-handlebars" id="query">
+    <td {{bind-attr class=":Query :query :elapsed elapsedClass iconClass"}}>
+      {{#if waiting}}
+        <i class="icon-lock"></i>
+      {{/if}}
+      {{#if vacuum}}
+        <i class="icon-trash"></i>
+      {{/if}}
+      {{#if idle}}
+        <i class="icon-time"></i>
+      {{/if}}
+      {{#if elapsed}}
+        {{formatElapsed elapsed}}
+      {{/if}}
+      <div class="popover left">
+        <div class="popover-content">
+          {{query.query}}
+        </div>
+        <div class="arrow"></div>
+      </div>
+    </td>
+  </script>
+
+<script src="http://code.jquery.com/jquery.js"></script>
+
+<script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v2.0.0.js"></script>
+<!--<script src="http://builds.emberjs.com/tags/v1.9.1/ember.js"></script>-->
+<script src="http://builds.emberjs.com/tags/v1.10.0-beta.4/ember.prod.js"></script>
+
+<script src="../ENV.js"></script>
+<script src="./app.js"></script>
+<script src="https://cdn.rawgit.com/paulirish/memory-stats.js/master/memory-stats.js"></script>
+<script>
+var stats = new MemoryStats();
+stats.domElement.style.position = 'fixed';
+stats.domElement.style.right        = '0px';
+stats.domElement.style.bottom       = '0px';
+document.body.appendChild( stats.domElement );
+requestAnimationFrame(function rAFloop(){
+    stats.update();
+    requestAnimationFrame(rAFloop);
+});
+</script>
+
+</body>
+</html>
+

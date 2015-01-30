@@ -1,0 +1,28 @@
+body {
+  font-family: "Helvetica Neue", Arial;
+  font-weight: 200;
+}
+
+.Buddy, h2, hr {
+  margin: 0;
+  transition: all 1250ms ease;
+  box-sizing: border-box;
+  font-size: 50px;
+}
+
+.status {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  transition: all 1250ms ease;
+  margin-right: 15px;
+  margin-bottom: 4px;
+  border-radius: 50%;
+  background-color: hsl(100, 50%, 50%);
+}
+
+.offline {
+  background-color: hsl(0, 50%, 50%);
+}
+
