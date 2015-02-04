@@ -101,9 +101,9 @@ var sample = function (queries, time) {
     topFiveQueries.push({ query: "" });
   }
 
-  var queries = [];
+  var _queries = [];
   topFiveQueries.forEach(function(query, index) {
-    queries.push(
+    _queries.push(
       <Query
         key={index}
         query={query.query}
@@ -129,7 +129,7 @@ var sample = function (queries, time) {
         {queries.length}
       </span>
     </td>,
-    queries
+    _queries
   ];
 };
 
