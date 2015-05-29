@@ -3,14 +3,18 @@ var Colors = require('../utils/Colors')
 
 var Arrow = React.createClass({
   render () {
+    var { size, left } = this.props
+    left -= size
     var styles = {
       width: 0,
       height: 0,
-      borderLeft: '10px solid transparent',
-      borderRight: '10px solid transparent',
-      borderBottom: `10px solid ${Colors.get(this.props.id).bg}`,
-      marginLeft: 40,
-      position: 'absolute'
+      borderLeft: `${size}px solid transparent`,
+      borderRight: `${size}px solid transparent`,
+      borderBottom: `${size}px solid ${Colors.get(this.props.id).bg}`,
+      marginTop: -size,
+      marginLeft: left,
+      position: 'absolute',
+      transition: 'all 350ms ease'
     }
     return <div style={styles}/>
   }

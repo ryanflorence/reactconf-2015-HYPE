@@ -3,8 +3,28 @@ var { Link, RouteHandler, Navigation } = require('react-router')
 var Colors = require('../utils/Colors')
 var Arrow = require('./Arrow')
 
+var ARROW_SIZE = 10
 var IMAGE_SIZE = 100
 var IMAGE_MARGIN = 10
+
+var AlbumCover = React.createClass({
+  render() {
+    var styles = {
+      display: 'inline-block',
+      margin: IMAGE_MARGIN
+    }
+    return (
+      <div style={styles}>
+        <Link to="album" params={{id: this.props.id}}>
+          <img
+            style={{height: IMAGE_SIZE, width: IMAGE_SIZE}}
+            src={this.props.src}
+          />
+        </Link>
+      </div>
+    )
+  }
+})
 
 var Albums = React.createClass({
 
@@ -51,37 +71,27 @@ var Albums = React.createClass({
     }, [[]])
   },
 
-  renderAlbum (release) {
-    var currentId = this.props.params.id
-    var { lastChildId } = this.state
-    var isCurrent = currentId === release.id
-    var wasCurrent = lastChildId === release.id
-    var styles = {
-      display: 'inline-block',
-      margin: IMAGE_MARGIN
-    }
-    return (
-      <div style={styles} key={release.id}>
-        <Link to="album" params={{id: release.id}}>
-          <img
-            style={{height: IMAGE_SIZE, width: IMAGE_SIZE}}
-            src={release.file}
-          />
-        </Link>
-        {isCurrent ? <Arrow id={release.id}/> : null}
-      </div>
-    )
-  },
-
   renderRow (row, index) {
+    var rowCurrentIndex, arrowMarginLeft
     var currentId = this.props.params.id
     var { lastChildId } = this.state
-    var hasCurrent = row.filter(release => release.id === currentId).length > 0
+    row.map((release, index) => {
+      if(release.id === currentId) rowCurrentIndex = index
+    })
+    var hasCurrent = !isNaN(rowCurrentIndex)
     var hadCurrent = row.filter(release => release.id === lastChildId).length > 0
     var sameRow = hasCurrent && hadCurrent
+    if(hasCurrent) {
+      var albumBounds = (IMAGE_MARGIN * 2) + IMAGE_SIZE
+      arrowMarginLeft = (albumBounds * (rowCurrentIndex + 1)) - (albumBounds / 2)
+    }
+    var albumCovers = row.map((release) => {
+      return <AlbumCover key={release.id} id={release.id} src={release.file} />
+    })
     return (
       <div key={index}>
-        {row.map(this.renderAlbum)}
+        {albumCovers}
+        {hasCurrent ? <Arrow id={currentId} left={arrowMarginLeft} size={ARROW_SIZE} /> : null}
         {hasCurrent ? <RouteHandler params={this.props.params} /> : null}
         {(hadCurrent && !sameRow) ? <RouteHandler params={{id: lastChildId}} old={true}/> : null}
       </div>
