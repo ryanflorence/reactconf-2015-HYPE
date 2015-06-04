@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="description" content="DBMON REACT" />
+  <meta charset="utf-8">
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="../styles.css" rel="stylesheet" type="text/css" />
+  <title>dbmon (react)</title>
+</head>
+<body>
+  <div id="dbmon"></div>
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="x-dbmon.html">
+  <script src="../ENV.js"></script>
+  <script src="app.js" type="text/javascript"></script>
+
+  <script src="https://cdn.rawgit.com/paulirish/memory-stats.js/master/memory-stats.js"></script>
+  <script>
+  var stats = new MemoryStats();
+  stats.domElement.style.position = 'fixed';
+  stats.domElement.style.right        = '0px';
+  stats.domElement.style.bottom       = '0px';
+  document.body.appendChild( stats.domElement );
+  requestAnimationFrame(function rAFloop(){
+      stats.update();
+      requestAnimationFrame(rAFloop);
+  });
+  </script>
+
+  <div>
+    <table is="x-dbmon" class="table table-striped latest-data"></table>
+  </div>
+
+</body>
+</html>

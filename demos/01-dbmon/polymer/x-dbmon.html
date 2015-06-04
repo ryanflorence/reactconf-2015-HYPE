@@ -1,0 +1,71 @@
+<link rel="import" href="x-database.html">
+
+<dom-module id="x-dbmon">
+
+  <style>
+  </style>
+
+  <template>
+    <tbody>
+      <template is="dom-repeat" items="{{databases}}">
+        <tr is="x-database" dbname="{{item.name}}" samples="{{item.samples}}"></tr>
+      </template>
+    </tbody>
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+
+    is: 'x-dbmon',
+    extends: 'table',
+
+    properties: {
+      databases: {
+        type: Array,
+        value: function () {
+          return [];
+        }
+      }
+    },
+
+    loadSamples: function () {
+      loadCount++;
+      var newData = getData();
+      var databases = [];
+
+      Object.keys(newData.databases).forEach(function(dbname) {
+        var sampleInfo = newData.databases[dbname];
+
+        var samples = [];
+        samples.push({
+          time: newData.start_at,
+          queries: sampleInfo.queries
+        });
+        if (samples.length > 5) {
+          samples.splice(0, samples.length - 5);
+        }
+
+        databases.push({
+          name: dbname,
+          samples: samples
+        });
+      });
+
+      this.set('databases', databases);
+      setTimeout(this.loadSamples.bind(this), ENV.timeout);
+    },
+
+    ready: function () {
+      this.loadSamples();
+    },
+
+    attached: function() {
+      console.log(Date.now() - start);
+    }
+
+  });
+
+</script>

@@ -1,0 +1,82 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<dom-module id="x-query">
+
+  <style>
+    :host {
+      position: relative;
+    }
+
+    :host:hover .popover {
+      left: -100%;
+      width: 100%;
+      display: block;
+    }
+  </style>
+
+  <template>
+    <span>{{elapsedFormatted}}</span>
+    <div class="popover left">
+      <div class="popover-content">{{query}}</div>
+      <div class="arrow"></div>
+    </div>
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+    is: 'x-query',
+    extends: 'td',
+
+    properties: {
+      query: {
+        type: String,
+        value: function () {
+          return 'test';
+        }
+      },
+      elapsed: {
+        type: Number,
+        value: function () {
+          return 10;
+        }
+      },
+      elapsedFormatted: {
+        type: String,
+        computed: 'computeFormattedElapsed(elapsed)'
+      },
+      className: {
+        type: String,
+        computed: 'computeClassName(elapsed)'
+      }
+    },
+
+    computeFormattedElapsed(elapsed) {
+      var str = parseFloat(elapsed).toFixed(2);
+      if (isNaN(str)) {
+        return '';
+      }
+      if (elapsed > 60) {
+        var minutes = Math.floor(elapsed / 60);
+        var comps = (elapsed % 60).toFixed(2).split('.');
+        var seconds = comps[0].lpad('0', 2);
+        var ms = comps[1];
+        str = minutes + ":" + seconds + "." + ms;
+      }
+      return str;
+    },
+
+    computeClassName: function (elapsed) {
+      var base = 'elapsed ';
+      if (elapsed >= 10.0) {
+        return base + 'warn_long';
+      } else if (elapsed >= 1.0) {
+        return base + 'warn';
+      }
+      return base + 'short';
+    }
+  });
+
+</script>

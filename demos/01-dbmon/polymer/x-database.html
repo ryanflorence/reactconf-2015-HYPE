@@ -1,0 +1,73 @@
+<link rel="import" href="x-query.html">
+
+<dom-module id="x-database">
+
+  <style>
+  </style>
+
+  <template>
+    <td class="dbname">{{dbname}}</td>
+    <td class="query-count">
+      <span class$="{{topFive.countClassName}}">{{topFive.queries.length}}</span>
+    </td>
+    <template is="dom-repeat" items="{{topFive.queries}}">
+      <td is="x-query" query="{{item.query}}" elapsed="{{item.elapsed}}"></td>
+    </template>
+  </template>
+
+</dom-module>
+
+<script>
+
+  Polymer({
+    is: 'x-database',
+    extends: 'tr',
+
+    properties: {
+      dbname: {
+        type: String,
+        value: function () {
+          return 'DBName';
+        }
+      },
+      samples: {
+        type: Array,
+        value: function () {
+          return [{
+            queries: []
+          }];
+        }
+      },
+      topFive: {
+        type: Object,
+        computed: 'computeTopFive(samples)'
+      }
+    },
+
+    computeTopFive: function (samples) {
+      var lastSample = samples[samples.length - 1];
+      var topFiveQueries = lastSample.queries.slice(0, 5);
+      while (topFiveQueries.length < 5) {
+        topFiveQueries.push({ query: "" });
+      }
+
+      var countClassName = "label";
+      if (lastSample.queries.length >= 20) {
+        countClassName += " label-important";
+      }
+      else if (lastSample.queries.length >= 10) {
+        countClassName += " label-warning";
+      }
+      else {
+        countClassName += " label-success";
+      }
+
+      return {
+        queries: topFiveQueries,
+        countClassName: countClassName
+      };
+    }
+
+  });
+
+</script>
