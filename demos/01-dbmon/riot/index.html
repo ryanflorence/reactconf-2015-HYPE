@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>dbmon (riot)</title>
+		<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="../styles.css" rel="stylesheet" type="text/css" />
+		<!--[if lt IE 9]>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.5/es5-shim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script>html5.addElements('dbmon database query')</script>
+		<![endif]-->
+	</head>
+	<body>
+		<dbmon></dbmon>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/riot/2.2.1/riot+compiler.js"></script>
+		<script src="../ENV.js"></script>
+		<script src="app.js" type="text/javascript"></script>
+		<script src="https://cdn.rawgit.com/paulirish/memory-stats.js/master/memory-stats.js"></script>
+		<script>
+		var stats = new MemoryStats();
+		stats.domElement.style.position = 'fixed';
+		stats.domElement.style.right        = '0px';
+		stats.domElement.style.bottom       = '0px';
+		document.body.appendChild( stats.domElement );
+		requestAnimationFrame(function rAFloop(){
+			stats.update();
+			requestAnimationFrame(rAFloop);
+		});
+		</script>
+
+		<script src="tags/dbmon.tag" type="riot/tag"></script>
+		<script src="tags/database.tag" type="riot/tag"></script>
+		<script src="tags/query.tag" type="riot/tag"></script>
+		<script>riot.mount('dbmon');</script>
+	</body>
+</html>
