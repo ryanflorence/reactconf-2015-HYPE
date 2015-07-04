@@ -14,7 +14,7 @@
     <table class="table table-striped latest-data">
       <tbody>
         <!-- Database -->
-        <tr ng-repeat="(key, db) in databases">
+        <tr ng-repeat="(key, db) in databases track by $index">
           <td class="dbname">
             {{db.name}}
           </td>
@@ -25,7 +25,7 @@
             </span>
           </td>
           <!-- Query -->
-          <td ng-repeat="q in topFiveQueries[key]" class="{{helper.getElapsedClassName(q.elapsed)}}">
+          <td ng-repeat="q in topFiveQueries[key] track by $index" class="{{helper.getElapsedClassName(q.elapsed)}}">
             {{q.elapsed | formatElapsed}}
             <div class="popover left">
               <div class="popover-content">
